@@ -1,0 +1,28 @@
+name: Github actions demo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v4
+      - name: setup java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          
+      - run: mvn compile
+      - run: mvn test
+      - run: mvn package
+      - uses: actions/upload-artifact@v4
+        with:
+         name: java-artifact
+         path: target/*.java
